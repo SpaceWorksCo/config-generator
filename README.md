@@ -1,5 +1,3 @@
-# Hush config-generator
+# Spacecoin Config Generator
 
-An easy to use Hush config generator
-
-Usable with our v3 mainnet!
+An easy to generate a SPACE.conf file.

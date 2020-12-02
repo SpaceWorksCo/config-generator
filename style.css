@@ -12,12 +12,12 @@ body {
 
 .button-white {
   background-color: white;
-  border-color: white;
+  border-color: #E44C65;
 }
 
 .button-dark {
-  background-color: #2d2d2d;
-  border-color: #2d2d2d;
+  background-color: #E44C65;
+  border-color: #E44C65;
 }
 
 .button-white.button-clear,
@@ -32,21 +32,21 @@ body {
 }
 
 .button-white.button-clear {
-  border-color: transparent;
+  border-color: #E44C65;
 }
 
 code.dark {
-  background-color: #2d2d2d;
+  background-color: #1c1d26;
   color: #fff;
 }
 
 code.light {
-  color: #2d2d2d;
+  color: #1c1d26;
 }
 
 .jumbo {
   padding: 20px 20px 75px 20px;
-  background-color: #2d2d2d;
+  background-color: #1c1d26;
   color: #ffffff;
 }
 
@@ -131,7 +131,7 @@ code.light {
   width: 75%;
   margin: 25px auto;
   padding: 10px;
-  background: #333;
+  background: #1c1d26;
   color: #fff;
   border-radius: 5px;
 }
@@ -183,11 +183,11 @@ code.light {
 }
 
 input:checked + .slider {
-  background-color: #2d2d2d;
+  background-color: #E44C65;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2d2d2d;
+  box-shadow: 0 0 1px #E44C65;
 }
 
 input:checked + .slider:before {
@@ -220,7 +220,26 @@ input:checked + .slider:before {
   margin: 0px 5px -15px 5px;
   padding: 3px 10px 3px 10px;
   border-radius: 5px;
-  background: #2d2d2d;
+  background: #E44C65;
+  color: #FFF;
+}
+
+.addnode {
+  position: relative;
+  list-style-type: none;
+  float: left;
+  left: -5px;
+  right: -5px;
+}
+.addnode li {
+  position: relative;
+  float: left;
+  font-size: 125%;
+  top: 0px;
+  margin: 0px 5px -15px 5px;
+  padding: 3px 10px 3px 10px;
+  border-radius: 5px;
+  background: #E44C65;
   color: #FFF;
 }
 

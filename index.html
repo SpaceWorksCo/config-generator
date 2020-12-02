@@ -1,31 +1,38 @@
 <html lang="en">
   <head>
-    <title>Config Generator | myHush.org</title>
+    <title>Config Generator | SpaceWorks</title>
+    <meta charset="utf-8" />
+		<meta name="description" content="Generate a Spacecoin (SPACE) configuration file." />
+		<meta name="keywords" content="spaceworks, spacecoin, SPACE, conf, configuration, file, generate, generator">
+		<meta name="author" content="SpaceWorks" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="shortcut icon" href="https://myhush.org/favicon.ico">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/milligram/1.1.0/milligram.min.css'>
     <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Poppins:300,400,500,700'>
     <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
     <link rel="stylesheet" href="style.css">
+    <!-- favicon -->
+		<link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
   </head>
   <body>
     <div id="app">
       <div class="jumbo text-center">
         <div class="logo">
-          <img src="logo.jpg" />
+          <img src="logo.png" />
         </div>
-        <h1>Hush Config Generator</h1>
+        <h1>Spacecoin Config Generator</h1>
         <h4>Select your platform</h4>
         <ul id="platform">
           <li><button class="button-white button-outline" v-on:click="setPlatform('Linux')">Linux</button></li>
-          <li><button class="button-white button-outline" v-on:click="setPlatform('Mac OS')">Mac OS</button></li>
+          <li><button class="button-white button-outline" v-on:click="setPlatform('Mac')">Mac</button></li>
           <li><button class="button-white button-outline" v-on:click="setPlatform('Windows')">Windows</button></li>
         </ul>
       </div>
       <div id="build" class="content text-center">
-        <h3>Let's build your config</h3>
-        <h5>Update your settings on the left. Your <code class="dark">.conf</code> will update on the right.</h5>
+        <h3>Let's build your configuration file.</h3>
+        <h5>Choose your settings, click Generate, and your <code class="dark">SPACE.conf</code> will appear.</h5>
         <div class="row">
           <div class="column">
             <form class="center">
@@ -34,7 +41,7 @@
                 <div class="row">
                   <div class="column">
                     <h5>General</h5>
-                    <p>Customize general Hush settings</p>
+                    <p>Customize general SPACE settings</p>
                     <ul class="toggles">
                       <li>
                         <label>Enable Daemon</label>
@@ -51,13 +58,6 @@
                         </label>
                       </li>
                       <li>
-                        <label>Use Tor</label>
-                        <label class="switch">
-                          <input type="checkbox" v-model="optionTor">
-                          <div class="slider round"></div>
-                        </label>
-                      </li>
-                      <li>
                         <label>Enable Metrics</label>
                         <label class="switch">
                           <input type="checkbox" v-model="optionShowMetrics">
@@ -65,32 +65,15 @@
                         </label>
                       </li>
                       <li>
-                        <label>Enable Mining</label>
+                        <label>Enable Staking</label>
                         <label class="switch">
-                          <input type="checkbox" v-model="optionGen" v-on:click="showMinerInfo">
+                          <input type="checkbox" v-model="optionStaking">
                           <div class="slider round"></div>
                         </label>
-                      </li>
-                      <li class="animated fadeInRight" id="minerAddress" v-on:click="showMinerAddress">
-                        <label>Specific Address</label>
-                        <label class="switch">
-                          <input type="checkbox" v-model="customMinerToAddress" v-on:click="showMinerAddress">
-                          <div class="slider round"></div>
-                        </label>
-                      </li>
-                      <li class="animated fadeInLeft" id="threads" style="clear: left;">
-                        <label>CPU Threads</label>
-                        <span class="thread-count" v-on:click="decreaseThreads"><</span>
-                        <input class="input" type="text" v-model="optionGenProcLimit" style="max-width: 40px; text-align: center;">
-                        <span class="thread-count" v-on:click="increaseThreads">></span>
-                      </li>
-                      <li class="animated fadeInRight" id="minerInput" style="border-color: #2d2d2d;">
-                        <label>Transparent Address</label>
-                        <input class="input" type="text" v-model="optionMinerAddress" style="border-color: #2d2d2d;">
                       </li>
                     </ul>
-                    <h5>Recommended</h5>
-                    <p>We suggest enabling these by default.</p>
+                    <h5>Indexes</h5>
+                    <p>Enable for more blockchain data.</p>
                     <ul class="toggles">
                       <li>
                         <label>Address Index</label>
@@ -114,32 +97,38 @@
                         </label>
                       </li>
                     </ul>
+                    <h5 style="margin-top: 15px;">Addnode</h5>
+                    <p>Add trusted nodes. Remove by clicking.</p>
+                    <input style="border-color: #1c1d26;" type="text" placeholder="Enter an ip address or domain and hit enter." v-model="tempAddnodelist" @keyup.enter="addAddnodeList(tempAddnodelist)">
+                    <ul class="addnode" v-for="item in optionAddnodeList" v-bind:item="item">
+                      <li v-on:click="removeAddnodeListItem(item)">{{ item }}</li>
+                    </ul>
+                    <h5 style="margin-top: 15px;">Whitelist</h5>
+                    <p>Whitelist trusted nodes. Remove by clicking.</p>
+                    <input style="border-color: #1c1d26;" type="text" placeholder="Enter an ip address or domain and hit enter." v-model="tempWhitelist" @keyup.enter="addWhiteList(tempWhitelist)">
+                    <ul class="whitelist" v-for="item in optionWhiteList" v-bind:item="item">
+                      <li v-on:click="removeWhiteListItem(item)">{{ item }}</li>
+                    </ul>
                     <h5>Paths</h5>
-                    <p>Customize Hush data paths</p>
+                    <p>Customize the SPACE data path.</p>
                     <label>Change Path?</label>
                     <label class="switch">
                       <input type="checkbox" v-model="customPath" v-on:click="showPathInput">
                       <div class="slider round"></div>
                     </label>
-                    <li class="animated fadeInLeft" id="paths" style="list-style-type: none; border-color: #2d2d2d;">
+                    <li class="animated fadeInLeft" id="paths" style="list-style-type: none; border-color: #1c1d26;">
                       <label>Blockchain Path</label>
-                      <input class="input" type="url" v-model="optionDataDir" style="border-color: #2d2d2d;">
+                      <input class="input" type="url" v-model="optionDataDir" style="border-color: #1c1d26;">
                     </li>
-                    <h5 style="margin-top: 15px;">Whitelist</h5>
-                    <p>Add trusted bootstrap nodes. Remove by clicking.</p>
-                    <input style="border-color: #2d2d2d;" type="text" placeholder="Enter a ip address and hit enter" v-model="tempWhitelist" @keyup.enter="addWhiteList(tempWhitelist)">
-                    <ul class="whitelist" v-for="item in optionWhiteList" v-bind:item="item">
-                      <li v-on:click="removeWhiteListItem(item)">{{ item }}</li>
-                    </ul>
                   </div>
                 </div>
               </fieldset>
             </form>
-            <button class="compile button-dark" v-on:click="compile">Compile</button>
+            <button class="compile button-dark" v-on:click="compile">Generate</button>
           </div>
           <div class="column">
             <div class="platform-banner animated fadeInDown">
-              You have selected <span class="bold">{{ platform }}</span> as your platform. Please place <code class="light">hush.conf</code> in the below path:
+              You have selected <span class="bold">{{ platform }}</span> as your platform. Please place <code class="light">SPACE.conf</code> in the below path:
               <div class="path">{{ path }}</div>
             </div>
 
@@ -149,8 +138,7 @@
         </div>
         <div class="row donate">
           <div class="column">
-            Developed by <b>@mreichardt</b><br/>
-            <span><b>HUSH3:</b> <i>RRJpqr5GDhR8xuKh7bvWyPHTqMuh3CZ6tt</i></span>
+            Powered by SpaceWorks<br/>
           </div>
         </div>
       </div>
