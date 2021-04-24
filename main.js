@@ -7,8 +7,7 @@ new Vue({
         peersList: [
           'explorer.spaceworks.co',
           'mining.spaceworks.co',
-          'electrum1.spaceworks.co',
-          'electrum2.spaceworks.co',
+          'space-node.nextblu.com',
           'space.explorer.dexstats.info'
         ],
         optionDaemon: 1,
